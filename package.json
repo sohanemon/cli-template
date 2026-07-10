@@ -1,0 +1,24 @@
+{
+  "name": "cli-template",
+  "module": "src/cli.ts",
+  "version": "0.0.0",
+  "author": {
+    "name": "Sohan Emon",
+    "email": "sohanemon@outlook.com"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "bun src/cli.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^11.1.0",
+    "inquirer": "^9.3.8"
+  }
+}
