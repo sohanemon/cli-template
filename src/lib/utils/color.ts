@@ -7,4 +7,8 @@ export const color = {
 	error: chalk.red,
 	muted: chalk.dim,
 	bold: chalk.bold,
-};
+} as const;
+
+export const colorNames = Object.keys(color);
+
+export type Color = keyof typeof color;
