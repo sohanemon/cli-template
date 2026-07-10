@@ -1,7 +1,9 @@
 {
   "name": "cli-template",
+  "description": "A template for creating CLIs with TypeScript",
   "module": "src/cli.ts",
   "version": "0.0.0",
+  "bin": "src/cli.ts",
   "author": {
     "name": "Sohan Emon",
     "email": "sohanemon@outlook.com"
@@ -12,7 +14,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.3",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/inquirer": "^9.0.10"
   },
   "peerDependencies": {
     "typescript": "^7.0.2"
