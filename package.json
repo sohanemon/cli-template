@@ -1,28 +1,55 @@
 {
-  "name": "cli-template",
-  "description": "A template for creating CLIs with TypeScript",
-  "module": "src/cli.ts",
-  "version": "0.0.0",
-  "bin": "src/cli.ts",
-  "author": {
-    "name": "Sohan Emon",
-    "email": "sohanemon@outlook.com"
-  },
-  "type": "module",
-  "scripts": {
-    "dev": "bun src/cli.ts"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.5.3",
-    "@types/bun": "latest",
-    "@types/inquirer": "^9.0.10"
-  },
-  "peerDependencies": {
-    "typescript": "^7.0.2"
-  },
-  "dependencies": {
-    "chalk": "^5.6.2",
-    "commander": "^15.0.0",
-    "inquirer": "^14.0.2"
-  }
+	"name": "cli-template",
+	"description": "A template for creating CLIs with TypeScript",
+	"version": "0.0.1",
+	"bin": {
+		"cli-template": "./dist/cli.js"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"scripts": {
+		"dev": "tsdown --watch",
+		"execute": "bun /dist/cli.js",
+		"build": "tsdown",
+		"test:run": "vitest run --silent",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint --write --unsafe .",
+		"format": "biome format .",
+		"format:write": "biome format . --write",
+		"typecheck": "tsgo --noEmit",
+		"release": "tsgo --noEmit && npm run build && npm publish"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.3",
+		"@types/bun": "latest",
+		"@types/inquirer": "^9.0.10",
+		"tsdown": "^0.22.12",
+		"vitest": "^4.1.10"
+	},
+	"peerDependencies": {
+		"typescript": "^7.0.2"
+	},
+	"dependencies": {
+		"chalk": "^5.6.2",
+		"commander": "^15.0.0",
+		"inquirer": "^14.0.2"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/sohanemon/cli-template.git"
+	},
+	"keywords": [
+		"cli",
+		"bun",
+		"chalk",
+		"commander",
+		"inquirer"
+	],
+	"author": {
+		"name": "Sohan Emon",
+		"email": "sohanemon@outlook.com"
+	}
 }
