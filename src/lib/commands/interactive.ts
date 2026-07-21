@@ -15,9 +15,9 @@ export function interactiveCommand() {
 					default: 'World',
 				},
 				{
-					type: 'list',
-					name: 'type',
-					message: 'Pick a type:',
+					type: 'select',
+					name: 'color',
+					message: 'Pick a color:',
 					choices: colorNames,
 				},
 				{

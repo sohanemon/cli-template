@@ -1,9 +1,9 @@
 {
-	"name": "cli-template",
+	"name": "cli-template-js",
 	"description": "A template for creating CLIs with TypeScript",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"bin": {
-		"cli-template": "./dist/cli.js"
+		"cli-template-js": "./dist/cli.js"
 	},
 	"files": [
 		"dist"
@@ -51,5 +51,9 @@
 	"author": {
 		"name": "Sohan Emon",
 		"email": "sohanemon@outlook.com"
+	},
+	"exports": {
+		".": "./dist/cli.js",
+		"./package.json": "./package.json"
 	}
 }

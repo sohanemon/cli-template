@@ -64,7 +64,7 @@ const answers = await inquirer.prompt([
     default: 'World',
   },
   {
-    type: 'list',
+    type: 'select',
     name: 'color',
     message: 'Pick a color:',
     choices: ['Red', 'Green', 'Blue', 'Yellow'],
