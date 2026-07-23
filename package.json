@@ -3,7 +3,8 @@
 	"description": "A template for creating CLIs with TypeScript",
 	"version": "0.0.2",
 	"bin": {
-		"cli-template-js": "./dist/cli.js"
+		"cli": "./dist/cli.mjs",
+		"cli-template": "./dist/cli.mjs"
 	},
 	"files": [
 		"dist"
@@ -53,7 +54,7 @@
 		"email": "sohanemon@outlook.com"
 	},
 	"exports": {
-		".": "./dist/cli.js",
+		".": "./dist/cli.mjs",
 		"./package.json": "./package.json"
 	}
 }
