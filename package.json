@@ -1,7 +1,7 @@
 {
 	"name": "cli-template-js",
 	"description": "A template for creating CLIs with TypeScript",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"bin": {
 		"cli": "./dist/cli.mjs",
 		"cli-template": "./dist/cli.mjs"
@@ -12,7 +12,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "tsdown --watch",
-		"execute": "bun /dist/cli.js",
+		"execute": "bun /dist/cli.mjs",
 		"build": "tsdown",
 		"test:run": "vitest run --silent",
 		"lint": "biome lint .",

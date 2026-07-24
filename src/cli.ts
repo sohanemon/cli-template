@@ -2,7 +2,7 @@
 
 import { Command } from 'commander';
 import packageJson from '../package.json' with { type: 'json' };
-import { registerCommands } from './cli.generated';
+import { registerCommands } from './lib/generated/cli.gen';
 
 const program = new Command();
 

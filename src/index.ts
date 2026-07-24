@@ -1,1 +1,1 @@
-export { greet } from './lib/utils/greet';
+export * from './lib/utils/example';
