@@ -1,5 +1,5 @@
+import { notify } from '@ts-utilities/notify';
 import { Command } from 'commander';
-import { color } from '../utils/color';
 
 interface GreetOptions {
 	formal?: boolean;
@@ -12,9 +12,9 @@ export function greetCommand() {
 		.option('-f, --formal', 'use formal greeting')
 		.action((name: string, options: GreetOptions) => {
 			if (options.formal) {
-				console.log(color.bold(`Good day, ${name}.`));
+				notify.info(`Good day, ${name}.`);
 			} else {
-				console.log(color.bold(`Hello, ${name}!`));
+				notify.success(`Hello, ${name}!`);
 			}
 		});
 }

@@ -33,7 +33,7 @@
 		"typescript": "^7.0.2"
 	},
 	"dependencies": {
-		"chalk": "^5.6.2",
+		"@ts-utilities/notify": "^0.0.3",
 		"commander": "^15.0.0",
 		"inquirer": "^14.0.2"
 	},
@@ -45,7 +45,6 @@
 	"keywords": [
 		"cli",
 		"bun",
-		"chalk",
 		"commander",
 		"inquirer"
 	],

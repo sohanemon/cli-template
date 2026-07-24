@@ -1,6 +1,6 @@
+import { notify } from '@ts-utilities/notify';
 import { Command } from 'commander';
 import inquirer from 'inquirer';
-import { color, colorNames } from '../utils/color';
 
 export function interactiveCommand() {
 	return new Command('interactive')
@@ -14,12 +14,7 @@ export function interactiveCommand() {
 					message: 'What is your name?',
 					default: 'World',
 				},
-				{
-					type: 'select',
-					name: 'color',
-					message: 'Pick a color:',
-					choices: colorNames,
-				},
+
 				{
 					type: 'confirm',
 					name: 'shout',
@@ -28,9 +23,8 @@ export function interactiveCommand() {
 				},
 			]);
 
-			const msg = `Hello, ${answers.name}! Your color is ${answers.color}.`;
+			const msg = `Hello, ${answers.name}!`;
 			const output = answers.shout ? msg.toUpperCase() : msg;
-
-			console.log(color.warn(output));
+			notify.success(output);
 		});
 }

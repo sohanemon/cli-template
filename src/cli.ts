@@ -4,7 +4,6 @@ import { Command } from 'commander';
 import * as packageJson from '../package.json';
 import { greetCommand } from './lib/commands/greet';
 import { interactiveCommand } from './lib/commands/interactive';
-import { spinnerCommand } from './lib/commands/spinner';
 
 const program = new Command();
 
@@ -15,7 +14,6 @@ program
 
 program.addCommand(greetCommand());
 program.addCommand(interactiveCommand());
-program.addCommand(spinnerCommand());
 
 // INFO: Show help and exit 0 when no args
 if (process.argv.length === 2) {
