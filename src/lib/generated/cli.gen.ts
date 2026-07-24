@@ -1,54 +1,81 @@
-// AUTO-GENERATED — do not edit by hand. Run `bun run generate:cli` to regenerate.
-import { Command, Option, Argument } from 'commander';
-import { greet, sayHiInternal, add, scale, joinWords, printTags, sumAll, setLevel, formatOutput, undocumented, createUser, configure, applySettings, fetchResource, greetMulti, ping, deploy } from '../../index';
+// AUTO-GENERATED — do not edit by hand. Run `commander-codegen` to regenerate.
+import { Command, Option } from 'commander';
+import inquirer from 'inquirer';
+import { greet, sayHiInternal, add, scale, joinWords, printTags, sumAll, setLevel, formatOutput, undocumented, createUser, configure, applySettings, fetchResource, greetMulti, ping, deploy, enableTags, build, allocate, listItems, processFiles, configureService, deployAsync, setState, sumSpecific } from '../../index';
 
 export function registerCommands(program: Command): void {
   program
     .command('greet')
     .alias('g')
     .description("Greet someone by name")
-    .argument('<name>', "name (string)")
+    .option('--name <value>', "name (string)")
     .option('--shout', "lets shout out")
-    .action((name, opts) => {
-      const result = greet(name, opts.shout);
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'name', message: "name (string)" }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { name: opts.name, shout: opts.shout, ...answers };
+      const result = greet(resolved.name, resolved.shout);
       if (result !== undefined) console.log(result);
     });
   
   program
     .command('say-hi')
     .description("Custom-named command")
-    .argument('<name>', "name (string)")
-    .action((name) => {
-      const result = sayHiInternal(name);
+    .option('--name <value>', "name (string)")
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'name', message: "name (string)" }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { name: opts.name, ...answers };
+      const result = sayHiInternal(resolved.name);
       if (result !== undefined) console.log(result);
     });
   
   program
     .command('add')
     .description("Add two numbers")
-    .argument('<a>', "first number")
-    .argument('<b>', "second number")
-    .action((a, b) => {
-      const result = add(a, b);
+    .option('--a <value>', "first number")
+    .option('--b <value>', "second number")
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'a', message: "first number", filter: (v) => Number(v) },
+  		{ type: 'input', name: 'b', message: "second number", filter: (v) => Number(v) }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { a: opts.a, b: opts.b, ...answers };
+      const result = add(resolved.a, resolved.b);
       if (result !== undefined) console.log(result);
     });
   
   program
     .command('scale')
     .description("Multiply with a configurable factor")
-    .argument('<value>', "the input value")
-    .option('--factor <value>', "multiplier")
-    .action((value, opts) => {
-      const result = scale(value, opts.factor);
+    .option('--value <value>', "the input value")
+    .option('--factor <value>', "multiplier", 2)
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'value', message: "the input value", filter: (v) => Number(v) }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { value: opts.value, factor: opts.factor, ...answers };
+      const result = scale(resolved.value, resolved.factor);
       if (result !== undefined) console.log(result);
     });
   
   program
     .command('joinWords')
     .description("Join a list of words")
-    .argument('<words...>', "words to join")
-    .action((words) => {
-      const result = joinWords(words);
+    .option('--words <values...>', "words to join", [])
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'words', message: "words to join" + ' (comma-separated)', filter: (v) => v.split(',').map((s) => s.trim()) }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { words: opts.words, ...answers };
+      const result = joinWords(resolved.words);
       if (result !== undefined) console.log(result);
     });
   
@@ -56,46 +83,67 @@ export function registerCommands(program: Command): void {
     .command('printTags')
     .description("Print optional tags")
     .option('--tags <values...>', "optional tags to include", [])
-    .action((opts) => {
-      const result = printTags(opts.tags);
+    .action(async (opts) => {
+      const resolved = { tags: opts.tags };
+      const result = printTags(resolved.tags);
       if (result !== undefined) console.log(result);
     });
   
   program
     .command('sumAll')
     .description("Sum a list of numbers")
-    .argument('<values...>', "numbers to sum")
-    .action((values) => {
-      const result = sumAll(values);
+    .option('--values <values...>', "numbers to sum", [])
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'values', message: "numbers to sum" + ' (comma-separated)', filter: (v) => v.split(',').map((s) => s.trim()).map(Number) }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { values: opts.values, ...answers };
+      const result = sumAll(resolved.values);
       if (result !== undefined) console.log(result);
     });
   
   program
     .command('setLevel')
     .description("Set log level")
-    .addArgument(new Argument('<level>', "the log level").choices(["debug","info","error"]))
-    .action((level) => {
-      const result = setLevel(level);
+    .addOption(new Option('--level <value>', "the log level").choices(["debug","info","error"]))
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'select', name: 'level', message: "the log level", choices: ["debug","info","error"] }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { level: opts.level, ...answers };
+      const result = setLevel(resolved.level);
       if (result !== undefined) console.log(result);
     });
   
   program
     .command('formatOutput')
     .description("Format output")
-    .argument('<text>', "text (string)")
-    .addOption(new Option('--format <value>', "output format").choices(["json","text"]))
-    .action((text, opts) => {
-      const result = formatOutput(text, opts.format);
+    .option('--text <value>', "text (string)")
+    .addOption(new Option('--format <value>', "output format").choices(["json","text"]).default('text'))
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'text', message: "text (string)" }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { text: opts.text, format: opts.format, ...answers };
+      const result = formatOutput(resolved.text, resolved.format);
       if (result !== undefined) console.log(result);
     });
   
   program
     .command('undocumented')
     .description("Undocumented params fallback test")
-    .argument('<name>', "name (string)")
+    .option('--name <value>', "name (string)")
     .option('--active', "active (boolean)")
-    .action((name, opts) => {
-      const result = undocumented(name, opts.active);
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'name', message: "name (string)" }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { name: opts.name, active: opts.active, ...answers };
+      const result = undocumented(resolved.name, resolved.active);
       if (result !== undefined) console.log(result);
     });
   
@@ -104,8 +152,14 @@ export function registerCommands(program: Command): void {
     .description("Create a user")
     .option('--user-name <value>', "the user's name")
     .option('--user-age <value>', "the user's age")
-    .action((opts) => {
-      const result = createUser({ name: opts.userName, age: opts.userAge });
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'userName', message: "the user's name" },
+  		{ type: 'input', name: 'userAge', message: "the user's age", filter: (v) => Number(v) }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { userName: opts.userName, userAge: opts.userAge, ...answers };
+      const result = createUser({ name: resolved.userName, age: resolved.userAge });
       if (result !== undefined) console.log(result);
     });
   
@@ -114,8 +168,14 @@ export function registerCommands(program: Command): void {
     .description("Complex nested config test")
     .option('--config-retries <value>', "retry count")
     .option('--config-nested-deep-flag', "flag (boolean)")
-    .action((opts) => {
-      const result = configure({ retries: opts.configRetries, nested: { deep: { flag: opts.configNestedDeepFlag } } });
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'configRetries', message: "retry count", filter: (v) => Number(v) },
+  		{ type: 'confirm', name: 'configNestedDeepFlag', message: "flag (boolean)", default: false }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { configRetries: opts.configRetries, configNestedDeepFlag: opts.configNestedDeepFlag, ...answers };
+      const result = configure({ retries: resolved.configRetries, nested: { deep: { flag: resolved.configNestedDeepFlag } } });
       if (result !== undefined) console.log(result);
     });
   
@@ -124,28 +184,39 @@ export function registerCommands(program: Command): void {
     .description("Optional settings object")
     .option('--settings-verbose', "verbose (boolean)")
     .option('--settings-level <value>', "level (number)")
-    .action((opts) => {
-      const result = applySettings({ verbose: opts.settingsVerbose, level: opts.settingsLevel });
+    .action(async (opts) => {
+      const resolved = { settingsVerbose: opts.settingsVerbose, settingsLevel: opts.settingsLevel };
+      const result = applySettings({ verbose: resolved.settingsVerbose, level: resolved.settingsLevel });
       if (result !== undefined) console.log(result);
     });
   
   program
     .command('fetchResource')
     .description("Fetch something asynchronously")
-    .argument('<id>', "the resource id")
-    .action(async (id) => {
-      const result = await fetchResource(id);
+    .option('--id <value>', "the resource id")
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'id', message: "the resource id" }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { id: opts.id, ...answers };
+      const result = await fetchResource(resolved.id);
       if (result !== undefined) console.log(result);
     });
   
   program
     .command('greetMulti')
     .description("Command with examples")
-    .argument('<name>', "target name")
+    .option('--name <value>', "target name")
     .option('--loud', "loud (boolean)")
     .addHelpText('after', "\nExamples:\n  $ greet-multi Alice --loud\n  $ greet-multi Bob")
-    .action((name, opts) => {
-      const result = greetMulti(name, opts.loud);
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'name', message: "target name" }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { name: opts.name, loud: opts.loud, ...answers };
+      const result = greetMulti(resolved.name, resolved.loud);
       if (result !== undefined) console.log(result);
     });
   
@@ -153,7 +224,8 @@ export function registerCommands(program: Command): void {
     .command('ping')
     .description("Run with zero arguments")
   
-    .action(() => {
+    .action(async (opts) => {
+      const resolved = {  };
       const result = ping();
       if (result !== undefined) console.log(result);
     });
@@ -161,11 +233,147 @@ export function registerCommands(program: Command): void {
   program
     .command('deploy')
     .description("Deploy to an environment")
-    .argument('<service>', "service name")
-    .addArgument(new Argument('<env>', "target environment").choices(["staging","prod"]))
+    .option('--service <value>', "service name")
+    .addOption(new Option('--env <value>', "target environment").choices(["staging","prod"]))
     .option('--dryRun', "preview only, don't apply")
-    .action((service, env, opts) => {
-      const result = deploy(service, env, opts.dryRun);
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'service', message: "service name" },
+  		{ type: 'select', name: 'env', message: "target environment", choices: ["staging","prod"] }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { service: opts.service, env: opts.env, dryRun: opts.dryRun, ...answers };
+      const result = deploy(resolved.service, resolved.env, resolved.dryRun);
+      if (result !== undefined) console.log(result);
+    });
+  
+  program
+    .command('enableTags')
+    .description("Enable feature tags")
+    .addOption(new Option('--tags <values...>', "feature tags to enable").choices(["api","db","cache"]))
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'checkbox', name: 'tags', message: "feature tags to enable", choices: ["api","db","cache"] }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { tags: opts.tags, ...answers };
+      const result = enableTags(resolved.tags);
+      if (result !== undefined) console.log(result);
+    });
+  
+  program
+    .command('build')
+    .description("Run the build")
+    .option('--name <value>', "build target name")
+    .addOption(new Option('--mode <value>', "build mode").choices(["prod","dev"]))
+    .option('--verbose', "print extra output", false)
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'name', message: "build target name" },
+  		{ type: 'select', name: 'mode', message: "build mode", choices: ["prod","dev"] }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { name: opts.name, mode: opts.mode, verbose: opts.verbose, ...answers };
+      const result = build(resolved.name, resolved.mode, resolved.verbose);
+      if (result !== undefined) console.log(result);
+    });
+  
+  program
+    .command('allocate')
+    .description("Allocate resources")
+    .option('--count <value>', "how many to allocate")
+    .addOption(new Option('--regions <values...>', "regions to allocate in").choices(["us","eu","apac"]))
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'count', message: "how many to allocate", filter: (v) => Number(v) },
+  		{ type: 'checkbox', name: 'regions', message: "regions to allocate in", choices: ["us","eu","apac"] }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { count: opts.count, regions: opts.regions, ...answers };
+      const result = allocate(resolved.count, resolved.regions);
+      if (result !== undefined) console.log(result);
+    });
+  
+  program
+    .command('listItems')
+    .description("List items with optional filters")
+    .option('--search <value>', "optional search term")
+    .option('--limit <value>', "max results", 10)
+    .action(async (opts) => {
+      const resolved = { search: opts.search, limit: opts.limit };
+      const result = listItems(resolved.search, resolved.limit);
+      if (result !== undefined) console.log(result);
+    });
+  
+  program
+    .command('processFiles')
+    .description("Process a list of file paths")
+    .option('--files <values...>', "files to process", [])
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'files', message: "files to process" + ' (comma-separated)', filter: (v) => v.split(',').map((s) => s.trim()) }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { files: opts.files, ...answers };
+      const result = processFiles(resolved.files);
+      if (result !== undefined) console.log(result);
+    });
+  
+  program
+    .command('configureService')
+    .description("Configure a service")
+    .option('--config-name <value>', "service name")
+    .addOption(new Option('--config-mode <value>', "service mode").choices(["active","standby"]))
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'configName', message: "service name" },
+  		{ type: 'select', name: 'configMode', message: "service mode", choices: ["active","standby"] }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { configName: opts.configName, configMode: opts.configMode, ...answers };
+      const result = configureService({ name: resolved.configName, mode: resolved.configMode });
+      if (result !== undefined) console.log(result);
+    });
+  
+  program
+    .command('deployAsync')
+    .description("Deploy asynchronously")
+    .addOption(new Option('--env <value>', "target environment").choices(["staging","prod"]))
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'select', name: 'env', message: "target environment", choices: ["staging","prod"] }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { env: opts.env, ...answers };
+      const result = await deployAsync(resolved.env);
+      if (result !== undefined) console.log(result);
+    });
+  
+  program
+    .command('toggle')
+    .description("Toggle a binary state")
+    .addOption(new Option('--state <value>', "the state to set").choices(["on","off"]))
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'select', name: 'state', message: "the state to set", choices: ["on","off"] }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { state: opts.state, ...answers };
+      const result = setState(resolved.state);
+      if (result !== undefined) console.log(result);
+    });
+  
+  program
+    .command('sumSpecific')
+    .description("Sum specific values")
+    .option('--values <values...>', "numbers to sum", [])
+    .action(async (opts) => {
+      const missingQuestions = [
+        { type: 'input', name: 'values', message: "numbers to sum" + ' (comma-separated)', filter: (v) => v.split(',').map((s) => s.trim()).map(Number) }
+      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
+      const resolved = { values: opts.values, ...answers };
+      const result = sumSpecific(resolved.values);
       if (result !== undefined) console.log(result);
     });
 }

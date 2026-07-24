@@ -164,3 +164,105 @@ export function deploy(
 ) {
 	return `deploying ${service} to ${env}${dryRun ? ' (dry run)' : ''}`;
 }
+
+// 18. Required enum[] → --tags <values...> option with .choices(),
+//    prompts via inquirer 'checkbox' when --tags isn't passed
+/**
+ * @description Enable feature tags
+ * @param tags feature tags to enable
+ */
+export function enableTags(tags: ('api' | 'db' | 'cache')[]) {
+	return tags.join(',');
+}
+
+// 19. Mixed: required string + required enum + optional boolean with default
+//    Only `name` and `mode` should generate inquirer questions; `verbose`
+//    should NOT prompt since it's optional (has a default).
+/**
+ * @description Run the build
+ * @param name build target name
+ * @param mode build mode
+ * @param verbose print extra output
+ */
+export function build(
+	name: string,
+	mode: 'dev' | 'prod',
+	verbose: boolean = false,
+) {
+	return `${name}:${mode}:${verbose}`;
+}
+
+// 20. Required number + required enum[] — mixed kind prompting in one command
+/**
+ * @description Allocate resources
+ * @param count how many to allocate
+ * @param regions regions to allocate in
+ */
+export function allocate(count: number, regions: ('us' | 'eu' | 'apac')[]) {
+	return `${count} in ${regions.join(',')}`;
+}
+
+// 21. All-optional command — should generate zero inquirer questions,
+//    no prompting should ever trigger since nothing is required
+/**
+ * @description List items with optional filters
+ * @param search optional search term
+ * @param limit max results
+ */
+export function listItems(search?: string, limit: number = 10) {
+	return `${search ?? 'all'}:${limit}`;
+}
+
+// 22. Required string array (not enum) — should still use free-form
+//    comma-separated 'input' prompt, NOT checkbox (only enum[] gets checkbox)
+/**
+ * @description Process a list of file paths
+ * @param files files to process
+ */
+export function processFiles(files: string[]) {
+	return files.length;
+}
+
+// 23. Nested object with a required enum sub-field — tests that enum
+//    detection + prompting still works inside a flattened object path
+/**
+ * @description Configure a service
+ * @param config.name service name
+ * @param config.mode service mode
+ */
+export function configureService(config: {
+	name: string;
+	mode: 'active' | 'standby';
+}) {
+	return `${config.name}:${config.mode}`;
+}
+
+// 24. Async function with a required enum — confirms await + prompting
+//    both work together correctly
+/**
+ * @description Deploy asynchronously
+ * @param env target environment
+ */
+export async function deployAsync(env: 'staging' | 'prod') {
+	return Promise.resolve(`deployed to ${env}`);
+}
+
+// 25. Required enum with only two choices, single-word command name via @name
+/**
+ * @name toggle
+ * @description Toggle a binary state
+ * @param state the state to set
+ */
+export function setState(state: 'on' | 'off') {
+	return state;
+}
+
+// 26. Required number[] (not enum[]) — should use comma-separated input
+//     with .map(Number), not checkbox
+/**
+ * @description Sum specific values
+ * @param values numbers to sum
+ */
+export function sumSpecific(values: number[]) {
+	return values.reduce((a, b) => a + b, 0);
+}
