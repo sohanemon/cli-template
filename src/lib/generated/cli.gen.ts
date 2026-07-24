@@ -11,11 +11,12 @@ export function registerCommands(program: Command): void {
     .option('--name <value>', "name (string)")
     .option('--shout', "lets shout out")
     .action(async (opts) => {
+      const values = { name: opts.name, shout: opts.shout };
       const missingQuestions = [
         { type: 'input', name: 'name', message: "name (string)" }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { name: opts.name, shout: opts.shout, ...answers };
+      const resolved = { ...values, ...answers };
       const result = greet(resolved.name, resolved.shout);
       if (result !== undefined) console.log(result);
     });
@@ -25,11 +26,12 @@ export function registerCommands(program: Command): void {
     .description("Custom-named command")
     .option('--name <value>', "name (string)")
     .action(async (opts) => {
+      const values = { name: opts.name };
       const missingQuestions = [
         { type: 'input', name: 'name', message: "name (string)" }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { name: opts.name, ...answers };
+      const resolved = { ...values, ...answers };
       const result = sayHiInternal(resolved.name);
       if (result !== undefined) console.log(result);
     });
@@ -40,12 +42,13 @@ export function registerCommands(program: Command): void {
     .option('--a <value>', "first number")
     .option('--b <value>', "second number")
     .action(async (opts) => {
+      const values = { a: opts.a, b: opts.b };
       const missingQuestions = [
         { type: 'input', name: 'a', message: "first number", filter: (v) => Number(v) },
   		{ type: 'input', name: 'b', message: "second number", filter: (v) => Number(v) }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { a: opts.a, b: opts.b, ...answers };
+      const resolved = { ...values, ...answers };
       const result = add(resolved.a, resolved.b);
       if (result !== undefined) console.log(result);
     });
@@ -56,11 +59,12 @@ export function registerCommands(program: Command): void {
     .option('--value <value>', "the input value")
     .option('--factor <value>', "multiplier", 2)
     .action(async (opts) => {
+      const values = { value: opts.value, factor: opts.factor };
       const missingQuestions = [
         { type: 'input', name: 'value', message: "the input value", filter: (v) => Number(v) }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { value: opts.value, factor: opts.factor, ...answers };
+      const resolved = { ...values, ...answers };
       const result = scale(resolved.value, resolved.factor);
       if (result !== undefined) console.log(result);
     });
@@ -70,11 +74,12 @@ export function registerCommands(program: Command): void {
     .description("Join a list of words")
     .option('--words <values...>', "words to join", [])
     .action(async (opts) => {
+      const values = { words: opts.words };
       const missingQuestions = [
         { type: 'input', name: 'words', message: "words to join" + ' (comma-separated)', filter: (v) => v.split(',').map((s) => s.trim()) }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { words: opts.words, ...answers };
+      const resolved = { ...values, ...answers };
       const result = joinWords(resolved.words);
       if (result !== undefined) console.log(result);
     });
@@ -94,11 +99,12 @@ export function registerCommands(program: Command): void {
     .description("Sum a list of numbers")
     .option('--values <values...>', "numbers to sum", [])
     .action(async (opts) => {
+      const values = { values: opts.values };
       const missingQuestions = [
         { type: 'input', name: 'values', message: "numbers to sum" + ' (comma-separated)', filter: (v) => v.split(',').map((s) => s.trim()).map(Number) }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { values: opts.values, ...answers };
+      const resolved = { ...values, ...answers };
       const result = sumAll(resolved.values);
       if (result !== undefined) console.log(result);
     });
@@ -108,11 +114,12 @@ export function registerCommands(program: Command): void {
     .description("Set log level")
     .addOption(new Option('--level <value>', "the log level").choices(["debug","info","error"]))
     .action(async (opts) => {
+      const values = { level: opts.level };
       const missingQuestions = [
         { type: 'select', name: 'level', message: "the log level", choices: ["debug","info","error"] }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { level: opts.level, ...answers };
+      const resolved = { ...values, ...answers };
       const result = setLevel(resolved.level);
       if (result !== undefined) console.log(result);
     });
@@ -123,11 +130,12 @@ export function registerCommands(program: Command): void {
     .option('--text <value>', "text (string)")
     .addOption(new Option('--format <value>', "output format").choices(["json","text"]).default('text'))
     .action(async (opts) => {
+      const values = { text: opts.text, format: opts.format };
       const missingQuestions = [
         { type: 'input', name: 'text', message: "text (string)" }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { text: opts.text, format: opts.format, ...answers };
+      const resolved = { ...values, ...answers };
       const result = formatOutput(resolved.text, resolved.format);
       if (result !== undefined) console.log(result);
     });
@@ -138,11 +146,12 @@ export function registerCommands(program: Command): void {
     .option('--name <value>', "name (string)")
     .option('--active', "active (boolean)")
     .action(async (opts) => {
+      const values = { name: opts.name, active: opts.active };
       const missingQuestions = [
         { type: 'input', name: 'name', message: "name (string)" }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { name: opts.name, active: opts.active, ...answers };
+      const resolved = { ...values, ...answers };
       const result = undocumented(resolved.name, resolved.active);
       if (result !== undefined) console.log(result);
     });
@@ -153,12 +162,13 @@ export function registerCommands(program: Command): void {
     .option('--user-name <value>', "the user's name")
     .option('--user-age <value>', "the user's age")
     .action(async (opts) => {
+      const values = { userName: opts.userName, userAge: opts.userAge };
       const missingQuestions = [
         { type: 'input', name: 'userName', message: "the user's name" },
   		{ type: 'input', name: 'userAge', message: "the user's age", filter: (v) => Number(v) }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { userName: opts.userName, userAge: opts.userAge, ...answers };
+      const resolved = { ...values, ...answers };
       const result = createUser({ name: resolved.userName, age: resolved.userAge });
       if (result !== undefined) console.log(result);
     });
@@ -169,12 +179,13 @@ export function registerCommands(program: Command): void {
     .option('--config-retries <value>', "retry count")
     .option('--config-nested-deep-flag', "flag (boolean)")
     .action(async (opts) => {
+      const values = { configRetries: opts.configRetries, configNestedDeepFlag: opts.configNestedDeepFlag };
       const missingQuestions = [
         { type: 'input', name: 'configRetries', message: "retry count", filter: (v) => Number(v) },
   		{ type: 'confirm', name: 'configNestedDeepFlag', message: "flag (boolean)", default: false }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { configRetries: opts.configRetries, configNestedDeepFlag: opts.configNestedDeepFlag, ...answers };
+      const resolved = { ...values, ...answers };
       const result = configure({ retries: resolved.configRetries, nested: { deep: { flag: resolved.configNestedDeepFlag } } });
       if (result !== undefined) console.log(result);
     });
@@ -195,11 +206,12 @@ export function registerCommands(program: Command): void {
     .description("Fetch something asynchronously")
     .option('--id <value>', "the resource id")
     .action(async (opts) => {
+      const values = { id: opts.id };
       const missingQuestions = [
         { type: 'input', name: 'id', message: "the resource id" }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { id: opts.id, ...answers };
+      const resolved = { ...values, ...answers };
       const result = await fetchResource(resolved.id);
       if (result !== undefined) console.log(result);
     });
@@ -211,11 +223,12 @@ export function registerCommands(program: Command): void {
     .option('--loud', "loud (boolean)")
     .addHelpText('after', "\nExamples:\n  $ greet-multi Alice --loud\n  $ greet-multi Bob")
     .action(async (opts) => {
+      const values = { name: opts.name, loud: opts.loud };
       const missingQuestions = [
         { type: 'input', name: 'name', message: "target name" }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { name: opts.name, loud: opts.loud, ...answers };
+      const resolved = { ...values, ...answers };
       const result = greetMulti(resolved.name, resolved.loud);
       if (result !== undefined) console.log(result);
     });
@@ -237,12 +250,13 @@ export function registerCommands(program: Command): void {
     .addOption(new Option('--env <value>', "target environment").choices(["staging","prod"]))
     .option('--dryRun', "preview only, don't apply")
     .action(async (opts) => {
+      const values = { service: opts.service, env: opts.env, dryRun: opts.dryRun };
       const missingQuestions = [
         { type: 'input', name: 'service', message: "service name" },
   		{ type: 'select', name: 'env', message: "target environment", choices: ["staging","prod"] }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { service: opts.service, env: opts.env, dryRun: opts.dryRun, ...answers };
+      const resolved = { ...values, ...answers };
       const result = deploy(resolved.service, resolved.env, resolved.dryRun);
       if (result !== undefined) console.log(result);
     });
@@ -252,11 +266,12 @@ export function registerCommands(program: Command): void {
     .description("Enable feature tags")
     .addOption(new Option('--tags <values...>', "feature tags to enable").choices(["api","db","cache"]))
     .action(async (opts) => {
+      const values = { tags: opts.tags };
       const missingQuestions = [
         { type: 'checkbox', name: 'tags', message: "feature tags to enable", choices: ["api","db","cache"] }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { tags: opts.tags, ...answers };
+      const resolved = { ...values, ...answers };
       const result = enableTags(resolved.tags);
       if (result !== undefined) console.log(result);
     });
@@ -268,12 +283,13 @@ export function registerCommands(program: Command): void {
     .addOption(new Option('--mode <value>', "build mode").choices(["prod","dev"]))
     .option('--verbose', "print extra output", false)
     .action(async (opts) => {
+      const values = { name: opts.name, mode: opts.mode, verbose: opts.verbose };
       const missingQuestions = [
         { type: 'input', name: 'name', message: "build target name" },
   		{ type: 'select', name: 'mode', message: "build mode", choices: ["prod","dev"] }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { name: opts.name, mode: opts.mode, verbose: opts.verbose, ...answers };
+      const resolved = { ...values, ...answers };
       const result = build(resolved.name, resolved.mode, resolved.verbose);
       if (result !== undefined) console.log(result);
     });
@@ -284,12 +300,13 @@ export function registerCommands(program: Command): void {
     .option('--count <value>', "how many to allocate")
     .addOption(new Option('--regions <values...>', "regions to allocate in").choices(["us","eu","apac"]))
     .action(async (opts) => {
+      const values = { count: opts.count, regions: opts.regions };
       const missingQuestions = [
         { type: 'input', name: 'count', message: "how many to allocate", filter: (v) => Number(v) },
   		{ type: 'checkbox', name: 'regions', message: "regions to allocate in", choices: ["us","eu","apac"] }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { count: opts.count, regions: opts.regions, ...answers };
+      const resolved = { ...values, ...answers };
       const result = allocate(resolved.count, resolved.regions);
       if (result !== undefined) console.log(result);
     });
@@ -310,11 +327,12 @@ export function registerCommands(program: Command): void {
     .description("Process a list of file paths")
     .option('--files <values...>', "files to process", [])
     .action(async (opts) => {
+      const values = { files: opts.files };
       const missingQuestions = [
         { type: 'input', name: 'files', message: "files to process" + ' (comma-separated)', filter: (v) => v.split(',').map((s) => s.trim()) }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { files: opts.files, ...answers };
+      const resolved = { ...values, ...answers };
       const result = processFiles(resolved.files);
       if (result !== undefined) console.log(result);
     });
@@ -325,12 +343,13 @@ export function registerCommands(program: Command): void {
     .option('--config-name <value>', "service name")
     .addOption(new Option('--config-mode <value>', "service mode").choices(["active","standby"]))
     .action(async (opts) => {
+      const values = { configName: opts.configName, configMode: opts.configMode };
       const missingQuestions = [
         { type: 'input', name: 'configName', message: "service name" },
   		{ type: 'select', name: 'configMode', message: "service mode", choices: ["active","standby"] }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { configName: opts.configName, configMode: opts.configMode, ...answers };
+      const resolved = { ...values, ...answers };
       const result = configureService({ name: resolved.configName, mode: resolved.configMode });
       if (result !== undefined) console.log(result);
     });
@@ -340,11 +359,12 @@ export function registerCommands(program: Command): void {
     .description("Deploy asynchronously")
     .addOption(new Option('--env <value>', "target environment").choices(["staging","prod"]))
     .action(async (opts) => {
+      const values = { env: opts.env };
       const missingQuestions = [
         { type: 'select', name: 'env', message: "target environment", choices: ["staging","prod"] }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { env: opts.env, ...answers };
+      const resolved = { ...values, ...answers };
       const result = await deployAsync(resolved.env);
       if (result !== undefined) console.log(result);
     });
@@ -354,11 +374,12 @@ export function registerCommands(program: Command): void {
     .description("Toggle a binary state")
     .addOption(new Option('--state <value>', "the state to set").choices(["on","off"]))
     .action(async (opts) => {
+      const values = { state: opts.state };
       const missingQuestions = [
         { type: 'select', name: 'state', message: "the state to set", choices: ["on","off"] }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { state: opts.state, ...answers };
+      const resolved = { ...values, ...answers };
       const result = setState(resolved.state);
       if (result !== undefined) console.log(result);
     });
@@ -368,11 +389,12 @@ export function registerCommands(program: Command): void {
     .description("Sum specific values")
     .option('--values <values...>', "numbers to sum", [])
     .action(async (opts) => {
+      const values = { values: opts.values };
       const missingQuestions = [
         { type: 'input', name: 'values', message: "numbers to sum" + ' (comma-separated)', filter: (v) => v.split(',').map((s) => s.trim()).map(Number) }
-      ].filter((q) => (opts as Record<string, unknown>)[q.name] === undefined);
+      ].filter((q) => (values as Record<string, unknown>)[q.name] === undefined);
       const answers = missingQuestions.length > 0 ? await inquirer.prompt(missingQuestions) : {};
-      const resolved = { values: opts.values, ...answers };
+      const resolved = { ...values, ...answers };
       const result = sumSpecific(resolved.values);
       if (result !== undefined) console.log(result);
     });

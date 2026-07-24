@@ -25,7 +25,7 @@
 		"prebuild": "bun run generate:cli"
 	},
 	"devDependencies": {
-		"commander-codegen": "^0.0.1",
+		"commander-codegen": "^0.0.3",
 		"@biomejs/biome": "2.5.5",
 		"@types/bun": "latest",
 		"@types/inquirer": "^9.0.10",
@@ -37,7 +37,7 @@
 		"typescript": "^7.0.2"
 	},
 	"dependencies": {
-		"@ts-utilities/notify": "^0.0.3",
+		"@ts-utilities/notify": "^0.0.12",
 		"commander": "^15.0.0",
 		"inquirer": "^14.0.2"
 	},
