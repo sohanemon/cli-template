@@ -20,7 +20,9 @@
 		"format": "biome format .",
 		"format:write": "biome format . --write",
 		"typecheck": "tsgo --noEmit",
-		"release": "tsgo --noEmit && npm run build && npm publish"
+		"release": "tsgo --noEmit && npm run build && npm publish",
+		"generate:cli": "bun run src/lib/scripts/generate-cli.ts",
+		"prebuild": "bun run generate:cli"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.5",

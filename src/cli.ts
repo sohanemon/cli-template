@@ -1,24 +1,28 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import * as packageJson from '../package.json';
-import { greetCommand } from './lib/commands/greet';
-import { interactiveCommand } from './lib/commands/interactive';
+import packageJson from '../package.json' with { type: 'json' };
+import { registerCommands } from './cli.generated';
 
 const program = new Command();
 
 program
 	.name(packageJson.name)
-	.description(packageJson.description)
-	.version(packageJson.version);
+	.description(packageJson.description ?? '')
+	.version(packageJson.version)
+	.showSuggestionAfterError();
 
-program.addCommand(greetCommand());
-program.addCommand(interactiveCommand());
+registerCommands(program);
 
-// INFO: Show help and exit 0 when no args
+// Show help and exit 0 when no args are passed
 if (process.argv.length === 2) {
 	program.outputHelp();
 	process.exit(0);
 }
 
-await program.parseAsync(process.argv);
+try {
+	await program.parseAsync(process.argv);
+} catch (err) {
+	console.error(err instanceof Error ? err.message : err);
+	process.exit(1);
+}
