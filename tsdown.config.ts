@@ -5,9 +5,9 @@ export default defineConfig({
 	format: ['esm'],
 	dts: true,
 	minify: true,
-	skipNodeModulesBundle: true,
 	treeshake: true,
 	entry: ['./src/cli.ts'],
+	deps: { skipNodeModulesBundle: true },
 	exports: {
 		bin: {
 			cli: './src/cli.ts',

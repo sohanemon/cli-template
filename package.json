@@ -21,10 +21,11 @@
 		"format:write": "biome format . --write",
 		"typecheck": "tsgo --noEmit",
 		"release": "tsgo --noEmit && npm run build && npm publish",
-		"generate:cli": "bun run src/lib/scripts/generate-cli.ts",
+		"generate:cli": "commander-codegen -i src/index.ts -o src/lib/generated/cli.gen.ts",
 		"prebuild": "bun run generate:cli"
 	},
 	"devDependencies": {
+		"commander-codegen": "^0.0.1",
 		"@biomejs/biome": "2.5.5",
 		"@types/bun": "latest",
 		"@types/inquirer": "^9.0.10",
