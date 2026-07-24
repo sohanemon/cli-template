@@ -6,6 +6,7 @@ export default defineConfig({
 	dts: true,
 	minify: true,
 	treeshake: true,
+	external: ['bun'],
 	entry: ['./src/cli.ts'],
 	deps: { skipNodeModulesBundle: true },
 	exports: {

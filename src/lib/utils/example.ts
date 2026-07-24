@@ -2,7 +2,7 @@
 /**
  * @alias g
  * @description Greet someone by name
- * @param shout lets shout out
+ * @option shout lets shout out
  * @interactive
  */
 export function greet(name: string, shout?: boolean) {
@@ -22,8 +22,8 @@ export function sayHiInternal(name: string) {
 // 3. Required number
 /**
  * @description Add two numbers
- * @param a first number
- * @param b second number
+ * @option a first number
+ * @option b second number
  */
 export function add(a: number, b: number) {
 	return a + b;
@@ -32,8 +32,8 @@ export function add(a: number, b: number) {
 // 4. Optional number with default value
 /**
  * @description Multiply with a configurable factor
- * @param value the input value
- * @param factor multiplier
+ * @option value the input value
+ * @option factor multiplier
  */
 export function scale(value: number, factor: number = 2) {
 	return value * factor;
@@ -42,7 +42,7 @@ export function scale(value: number, factor: number = 2) {
 // 5. Required string array (variadic positional)
 /**
  * @description Join a list of words
- * @param words words to join
+ * @option words words to join
  */
 export function joinWords(words: string[]) {
 	return words.join(' ');
@@ -51,7 +51,7 @@ export function joinWords(words: string[]) {
 // 6. Optional string array (repeatable flag)
 /**
  * @description Print optional tags
- * @param tags optional tags to include
+ * @option tags optional tags to include
  */
 export function printTags(tags?: string[]) {
 	return tags?.join(',') ?? '';
@@ -60,7 +60,7 @@ export function printTags(tags?: string[]) {
 // 7. Required number array
 /**
  * @description Sum a list of numbers
- * @param values numbers to sum
+ * @option values numbers to sum
  */
 export function sumAll(values: number[]) {
 	return values.reduce((a, b) => a + b, 0);
@@ -69,7 +69,7 @@ export function sumAll(values: number[]) {
 // 8. Required enum (string-literal union) as positional
 /**
  * @description Set log level
- * @param level the log level
+ * @option level the log level
  */
 export function setLevel(level: 'debug' | 'info' | 'error') {
 	return `level set to ${level}`;
@@ -78,7 +78,7 @@ export function setLevel(level: 'debug' | 'info' | 'error') {
 // 9. Optional enum with default
 /**
  * @description Format output
- * @param format output format
+ * @option format output format
  */
 export function formatOutput(text: string, format: 'json' | 'text' = 'text') {
 	return format === 'json' ? JSON.stringify({ text }) : text;
@@ -95,8 +95,8 @@ export function undocumented(name: string, active?: boolean) {
 // 11. Flat object param (your nested-object feature, one level)
 /**
  * @description Create a user
- * @param user.name the user's name
- * @param user.age the user's age
+ * @option user.name the user's name
+ * @option user.age the user's age
  */
 export function createUser(user: { name: string; age: number }) {
 	return `${user.name} (${user.age})`;
@@ -105,7 +105,7 @@ export function createUser(user: { name: string; age: number }) {
 // 12. Deeply nested object param (2+ levels)
 /**
  * @description Complex nested config test
- * @param config.retries retry count
+ * @option config.retries retry count
  */
 export function configure(config: {
 	retries: number;
@@ -125,7 +125,7 @@ export function applySettings(settings?: { verbose: boolean; level: number }) {
 // 14. Async function — should generate `async` action + `await` call
 /**
  * @description Fetch something asynchronously
- * @param id the resource id
+ * @option id the resource id
  */
 export async function fetchResource(id: string) {
 	return Promise.resolve(`resource-${id}`);
@@ -134,7 +134,7 @@ export async function fetchResource(id: string) {
 // 15. Multiple @example tags — should render in --help via addHelpText
 /**
  * @description Command with examples
- * @param name target name
+ * @option name target name
  * @example greet-multi Alice --loud
  * @example greet-multi Bob
  */
@@ -153,9 +153,9 @@ export function ping() {
 // 17. Mixed required positional + required enum + optional flag, ordering correct
 /**
  * @description Deploy to an environment
- * @param service service name
- * @param env target environment
- * @param dryRun preview only, don't apply
+ * @option service service name
+ * @option env target environment
+ * @option dryRun preview only, don't apply
  */
 export function deploy(
 	service: string,
@@ -169,7 +169,7 @@ export function deploy(
 //    prompts via inquirer 'checkbox' when --tags isn't passed
 /**
  * @description Enable feature tags
- * @param tags feature tags to enable
+ * @option tags feature tags to enable
  */
 export function enableTags(tags: ('api' | 'db' | 'cache')[]) {
 	return tags.join(',');
@@ -180,9 +180,9 @@ export function enableTags(tags: ('api' | 'db' | 'cache')[]) {
 //    should NOT prompt since it's optional (has a default).
 /**
  * @description Run the build
- * @param name build target name
- * @param mode build mode
- * @param verbose print extra output
+ * @option name build target name
+ * @option mode build mode
+ * @option verbose print extra output
  */
 export function build(
 	name: string,
@@ -195,8 +195,8 @@ export function build(
 // 20. Required number + required enum[] — mixed kind prompting in one command
 /**
  * @description Allocate resources
- * @param count how many to allocate
- * @param regions regions to allocate in
+ * @option count how many to allocate
+ * @option regions regions to allocate in
  */
 export function allocate(count: number, regions: ('us' | 'eu' | 'apac')[]) {
 	return `${count} in ${regions.join(',')}`;
@@ -206,8 +206,8 @@ export function allocate(count: number, regions: ('us' | 'eu' | 'apac')[]) {
 //    no prompting should ever trigger since nothing is required
 /**
  * @description List items with optional filters
- * @param search optional search term
- * @param limit max results
+ * @option search optional search term
+ * @option limit max results
  */
 export function listItems(search?: string, limit: number = 10) {
 	return `${search ?? 'all'}:${limit}`;
@@ -217,7 +217,7 @@ export function listItems(search?: string, limit: number = 10) {
 //    comma-separated 'input' prompt, NOT checkbox (only enum[] gets checkbox)
 /**
  * @description Process a list of file paths
- * @param files files to process
+ * @option files files to process
  */
 export function processFiles(files: string[]) {
 	return files.length;
@@ -227,8 +227,8 @@ export function processFiles(files: string[]) {
 //    detection + prompting still works inside a flattened object path
 /**
  * @description Configure a service
- * @param config.name service name
- * @param config.mode service mode
+ * @option config.name service name
+ * @option config.mode service mode
  */
 export function configureService(config: {
 	name: string;
@@ -241,7 +241,7 @@ export function configureService(config: {
 //    both work together correctly
 /**
  * @description Deploy asynchronously
- * @param env target environment
+ * @option env target environment
  */
 export async function deployAsync(env: 'staging' | 'prod') {
 	return Promise.resolve(`deployed to ${env}`);
@@ -251,7 +251,7 @@ export async function deployAsync(env: 'staging' | 'prod') {
 /**
  * @name toggle
  * @description Toggle a binary state
- * @param state the state to set
+ * @option state the state to set
  */
 export function setState(state: 'on' | 'off') {
 	return state;
@@ -261,7 +261,7 @@ export function setState(state: 'on' | 'off') {
 //     with .map(Number), not checkbox
 /**
  * @description Sum specific values
- * @param values numbers to sum
+ * @option values numbers to sum
  */
 export function sumSpecific(values: number[]) {
 	return values.reduce((a, b) => a + b, 0);
